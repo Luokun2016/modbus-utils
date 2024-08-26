@@ -42,6 +42,33 @@ gcc ./modbus_server/modbus_server.c -I./common -I./libmodbus/src/ -L./libmodbus/
 running
 =======
 
+
+# 静态编译modbuslib
+```
+cd libmodbus
+
+参考 MEADME
+
+./configure --enable-static
+make
+make insatll
+```
+
+# 设置动态搜索路径为当前运行目录
+```
+gcc ./modbus_client/modbus_client.c -I./common -I./libmodbus/src/ -L./libmodbus/src/.libs/ -lmodbus -Wl,-rpath,. -o mbClient
+
+gcc ./modbus_server/modbus_server.c -I./common -I./libmodbus/src/ -L./libmodbus/src/.libs/ -lmodbus -Wl,-rpath,. -o mbServer
+
+将libmodbus.so.5放入程序执行目录
+```
+
+# 编译静态链接库
+```
+gcc ./modbus_client/modbus_client.c -I ./common -I ./libmodbus/src -l:libmodbus.a -o modbus_client
+gcc ./modbus_server/modbus_server.c -I ./common -I ./libmodbus/src -l:libmodbus.a -o modbus_server
+```
+
 If modbus libraries are not in a default location (either it's needed to move libraries to app location or set
 appropriate environment variable):
 - on linux it would be:
